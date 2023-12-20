@@ -1,7 +1,6 @@
 package com.vikram.jwtspringauth.filter;
 
 import com.vikram.jwtspringauth.jwt.JWTService;
-import com.vikram.jwtspringauth.service.UserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -34,7 +34,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        if(StringUtils.hasLength(authHeader) || !authHeader.startsWith("Bearer ")) {
+        if(!StringUtils.hasLength(authHeader) || !authHeader.startsWith("Bearer ")) {
             // TODO: throw exception
             filterChain.doFilter(request, response);
             return;
